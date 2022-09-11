@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useEffect, useState} from 'react'
+import { database } from './firebase'
+import { ref, onValue} from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
-function App() {
+const App = () => {
+  const[input,setInput] = useState("");
+  const[data,setData] = useState({});
+  // const Ref = ref(database, 'contacts/',);
+
+  useEffect(() => {
+    const Ref = ref(database, 'contacts/');
+    onValue(Ref, (snapshot) => {
+      const response = snapshot.val();
+      setData(response);
+    });
+
+    
+    console.log(data);
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input 
+        type="search"
+        onChange={(e)=>setInput(e.target.value)}
+        value={input}
+      />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
